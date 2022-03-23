@@ -5,6 +5,10 @@ const Schema = mongoose.Schema;
 
 const hirdetesSchema = new Schema({
   _id: Number,
+  kategoria: {
+      type: Number, 
+      default: 1
+  },
   kategoria: Number,
   cim: {
     type: String,
@@ -18,6 +22,7 @@ const hirdetesSchema = new Schema({
   },
   hirdetesDatuma: {
     type: Date,
+    default: Date.now()
   },
   serulesmentes: Boolean,
   arFt: {
