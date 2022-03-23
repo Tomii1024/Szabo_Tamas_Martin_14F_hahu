@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
     const hirdetes = new Hirdetes({_id, kategoria, cim, leiras, hirdetesDatuma, serulesmentes, arFt, kepUrl});
   hirdetes
   .save()
-  .then(res.json({
+  .then(res.status(200).json({
       "message":"A rekord rögzítése sikeres!"
   }))
   .catch(err => console.log(err))
@@ -34,5 +34,23 @@ router.post('/', function(req, res, next) {
   }
   
 });
+
+router.get("/", function(req,res,next){
+  Hirdetes
+  .find()
+  .then(hirdetesek => {
+    res.json(hirdetesek);
+  })
+})
+
+router.delete("/:id", function(req,res,next){
+  const id = req.params.id;
+  Hirdetes
+  .findByIdAndDelete(id)
+  .then(res.json({
+    'status': 'Sikeres a törlés'
+  }))
+  .catch(err => console.log(err));
+})
 
 module.exports = router;
