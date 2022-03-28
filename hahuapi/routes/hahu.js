@@ -1,8 +1,10 @@
+const { response } = require('express');
 var express = require('express');
 const hirdetes = require('../models/hirdetes');
 var router = express.Router();
 
 var Hirdetes = require('../models/hirdetes');
+const Kategoria = require('../models/kategoria');
 
 
 router.post('/', function(req, res, next) {
@@ -42,12 +44,36 @@ router.get("/", function(req,res,next){
     res.json(hirdetesek);
   })
 })
+router.get("/:mezo", function (req,res,next){
+  const mezo = req.params.mezo;
+  Hirdetes.find()
+  .populate('kategoria','nev - id')
+  .sort({[mezo]:1 })
+  .then(response => {
+    res.json(response);
+  })
+  .catch(err => console.log(err));
+})
+
 
 router.delete("/:id", function(req,res,next){
   const id = req.params.id;
   Hirdetes
+.findById(id)
+.then(response => {
+  if (response === null) {
+    return res.json({'error': `A hirdetés ${id} azonosítóval nem létezik`})
+  }
+  Hirdetes.findByIdAndDelete(id)
+  .then(
+    res
+    .status(200)
+    .json({status: `A hirdetés ${id} azonosítóval törlésre került!`})
+  )
+})
+  Hirdetes
   .findByIdAndDelete(id)
-  .then(res.json({
+  .then(res.status(200).json({
     'status': 'Sikeres a törlés'
   }))
   .catch(err => console.log(err));
