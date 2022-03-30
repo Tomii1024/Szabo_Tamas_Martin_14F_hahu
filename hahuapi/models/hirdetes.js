@@ -1,7 +1,10 @@
 
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
+
+function arFtValidator(val) {
+  return val % 1000 === 0;
+}
 
 const hirdetesSchema = new Schema({
   _id: Number,
@@ -13,7 +16,7 @@ const hirdetesSchema = new Schema({
   kategoria: Number,
   cim: {
     type: String,
-    required: true,
+    required: [true, "Cím megadása kötelező"],
     unique: true,
     maxlength: 100,
   },
@@ -29,6 +32,7 @@ const hirdetesSchema = new Schema({
   arFt: {
     type: Number,
     required: true,
+    validate:[arFtValidator, "Az ár nem osztható 1000-rel!"]
   },
   kepUrl: {
     type: String,
