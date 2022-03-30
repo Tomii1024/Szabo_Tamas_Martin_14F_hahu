@@ -79,4 +79,22 @@ router.delete("/:id", function(req,res,next){
   .catch(err => console.log(err));
 })
 
+router.put('/', function (req, res, next) {
+  const _id = req.body._id;
+  const updatedArFt = req.body.arFt;
+  Hirdetes
+  .findByIdAndUpdate(_id, { arFt: updatedArFt },{new: true}
+  )
+    .then(result => {
+      res.json(result)
+    })
+    
+    
+    // if (err){
+    //     return res.json(err)
+    // }
+    // else{
+    //     return res.json(docs)
+    // }
+  })
 module.exports = router;
